@@ -70,6 +70,7 @@ import { createApp } from "vue";
 
 (async() => {
   const data = {
+    location: location,
     repos: await toArrayPromise(ghRequest("https://api.github.com/users/sixcorners/repos")),
   }
   createApp({data() { return data; }}).mount("body");
@@ -79,7 +80,7 @@ import { createApp } from "vue";
 <h1>sixcorners' github projects</h1>
 <table>
 <template v-for="repo in repos" :key="repo.id">
-<tr v-if="!repo.fork && !repo.archived && !repo.disabled">
+<tr v-if="!repo.fork && !repo.archived && !repo.disabled && repo.homepage != location">
   <td><i :class="`devicon-${repo.language.toLowerCase()}-plain`"></i>
   <td><a :href="repo.has_pages ? `https://${repo.owner.login}.github.io/${repo.name}/` : repo.html_url">{{repo.name}}/</a>
 </template>

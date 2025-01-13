@@ -35,11 +35,7 @@ function* parseLinks(str) {
       attr = g2;
       break;
     case '=':
-      if (g4) {
-        ret[attr] = g4;
-        break;
-      }
-      ret[attr] = g3.replace(/\\(.)/g, "$1");
+      ret[attr] = g4 ?? g3.replace(/\\(.)/g, "$1");
       break;
     }
   }

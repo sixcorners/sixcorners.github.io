@@ -83,5 +83,6 @@ import { createApp } from "vue";
 <tr v-if="!repo.fork && !repo.archived && !repo.disabled && repo.homepage != location">
   <td><i :class="`devicon-${repo.language.toLowerCase()}-plain`"></i>
   <td><a :href="repo.has_pages ? `https://${repo.owner.login}.github.io/${repo.name}/` : repo.html_url">{{repo.name}}/</a>
+  <td>{{repo.description}}
 </template>
 </table>

@@ -20,7 +20,7 @@
 <script type="module" async>
 function* parseLinks(str) {
   const matches = str.matchAll(/<([^>]*)|; *([^ =]*)|= *"((?:[^"\\]|\\.)*)"|= *([^,;]*)/g);
-  let ret, attr;
+  let ret, propertyName;
   for (const match of matches) {
     const [g0, g1, g2, g3, g4] = match;
     switch (g0[0]) {
@@ -29,10 +29,10 @@ function* parseLinks(str) {
       ret = {value: g1};
       break;
     case ';':
-      attr = g2;
+      propertyName = g2;
       break;
     case '=':
-      ret[attr] = g4 ?? g3.replace(/\\(.)/g, "$1");
+      ret[propertyName] = g4 ?? g3.replace(/\\(.)/g, "$1");
       break;
     }
   }

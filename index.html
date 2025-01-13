@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <meta charset="UTF-8">
-<title>sixcorners.github.io index</title>
+<title>Index of /</title>
 <meta name="referrer" content="no-referrer">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/devicon/2.16.0/devicon.min.css" integrity="sha512-BlFCHJWngPEHme4TwlEob6dPLfoNaQBTTISPwr4344nxR353w2vgGZ7GiSadbbeR20cJeeM0u1I2lAZuIZ1aOQ==" crossorigin="anonymous">
 <style>
@@ -78,7 +78,8 @@ import { createApp } from "vue";
 })();
 </script>
 
-<h1>sixcorners' github projects</h1>
+<h1>Index of /</h1>
+<hr>
 <table>
 <template v-for="repo in repos" :key="repo.id">
 <tr v-if="!repo.fork && !repo.archived && !repo.disabled && repo.homepage != location">
@@ -89,3 +90,4 @@ import { createApp } from "vue";
   <td>{{repo.description}}
 </template>
 </table>
+<hr>

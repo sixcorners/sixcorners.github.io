@@ -5,6 +5,7 @@
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/devicon/2.16.0/devicon.min.css" integrity="sha512-BlFCHJWngPEHme4TwlEob6dPLfoNaQBTTISPwr4344nxR353w2vgGZ7GiSadbbeR20cJeeM0u1I2lAZuIZ1aOQ==" crossorigin="anonymous">
 <style>
 :root { color-scheme: light dark; }
+.devicon-github-plain { text-decoration:none; }
 </style>
 <script type="importmap">
 {
@@ -82,7 +83,8 @@ import { createApp } from "vue";
 <template v-for="repo in repos" :key="repo.id">
 <tr v-if="!repo.fork && !repo.archived && !repo.disabled && repo.homepage != location">
   <td><i :class="`devicon-${repo.language.toLowerCase()}-plain`"></i>
-  <td><a :href="repo.has_pages ? `https://${repo.owner.login}.github.io/${repo.name}/` : repo.html_url">{{repo.name}}/</a>
+  <td><a :href="repo.has_pages ? `https://${repo.owner.login}.github.io/${repo.name}/` : null">{{repo.name}}/</a>
+  <td><a :href="repo.html_url" class="devicon-github-plain"></a>
   <td>{{repo.description}}
 </template>
 </table>

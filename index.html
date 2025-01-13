@@ -58,7 +58,7 @@ async function* ghRequest(url) {
   if (!resp.ok) throw new Error(`request to repos endpoint returned ${resp.status}`);
   for (const page of await resp.json()) yield page;
   const { next } = links(resp);
-  if (next) yield* gh_request(next[0].value);
+  if (next) yield* ghRequest(next[0].value);
 }
 
 async function toArrayPromise(gen) {

@@ -20,15 +20,12 @@
 <script type="module" async>
 function* parseLinks(str) {
   const matches = str.matchAll(/<([^>]*)|; *([^ =]*)|= *"((?:[^"\\]|\\.)*)"|= *([^,;]*)/g);
-  let ret;
-  let attr;
+  let ret, attr;
   for (const match of matches) {
     const [g0, g1, g2, g3, g4] = match;
     switch (g0[0]) {
     case '<':
-      if (ret) {
-        yield ret;
-      }
+      if (ret) yield ret;
       ret = {value: g1};
       break;
     case ';':

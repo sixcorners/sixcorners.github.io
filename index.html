@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<meta charset="UTF-8">
+<title>sixcorners.github.io index</title>
+<meta name="referrer" content="no-referrer">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/devicon/2.16.0/devicon.min.css" integrity="sha512-BlFCHJWngPEHme4TwlEob6dPLfoNaQBTTISPwr4344nxR353w2vgGZ7GiSadbbeR20cJeeM0u1I2lAZuIZ1aOQ==" crossorigin="anonymous">
+<style>
+:root { color-scheme: light dark; }
+</style>
+<script type="importmap">
+{
+  "imports": {
+    "vue": "https://cdnjs.cloudflare.com/ajax/libs/vue/3.5.13/vue.esm-browser.prod.min.js"
+  },
+  "integrity": {
+    "https://cdnjs.cloudflare.com/ajax/libs/vue/3.5.13/vue.esm-browser.prod.min.js": "sha512-uAd8ed9WXz2BRMGwkFbb1ysGRedDfzE9cRqI1FscRYxnps82YWOwY7mw+a5xiDRawy6dJ+YxcJq6s4bQvU4WNw=="
+  }
+}
+</script>
+<script type="module" async>
+function* parseLinks(str) {
+  const matches = str.matchAll(/<([^>]*)|; *([^ =]*)|= *"((?:[^"\\]|\\.)*)"|= *([^,;]*)/g);
+  let ret;
+  let attr;
+  for (const match of matches) {
+    const [g0, g1, g2, g3, g4] = match;
+    switch (g0[0]) {
+    case '<':
+      if (ret) {
+        yield ret;
+      }
+      ret = {value: g1};
+      break;
+    case ';':
+      attr = g2;
+      break;
+    case '=':
+      if (g4) {
+        ret[attr] = g4;
+        break;
+      }
+      ret[attr] = g3.replace(/\\(.)/g, "$1");
+      break;
+    }
+  }
+  if (ret) yield ret;
+}
+
+function links(str) {
+  if (str instanceof Response) str = str.headers;
+  if (str instanceof Headers) str = str.get("Link");
+  if (!str) return {};
+  return Object.groupBy(parseLinks(str), x => x.rel);
+}
+
+async function* ghRequest(url) {
+  const resp = await fetch(url);
+  if (!resp.ok) throw new Error(`request to repos endpoint returned ${resp.status}`);
+  for (const page of await resp.json()) yield page;
+  const { next } = links(resp);
+  if (next) yield* gh_request(next[0].value);
+}
+
+async function toArrayPromise(gen) {
+  const ret = [];
+  for await (const i of gen) ret.push(i);
+  return ret;
+}
+
+import { createApp } from "vue";
+
+(async() => {
+  const data = {
+    repos: await toArrayPromise(ghRequest("https://api.github.com/users/sixcorners/repos")),
+  }
+  createApp({data() { return data; }}).mount("body");
+})();
+</script>
+
+<h1>sixcorners' github projects</h1>
+<table>
+<template v-for="repo in repos" :key="repo.id">
+<tr v-if="!repo.fork && !repo.archived && !repo.disabled">
+  <td><i :class="`devicon-${repo.language.toLowerCase()}-plain`"></i>
+  <td><a :href="repo.has_pages ? `https://${repo.owner.login}.github.io/${repo.name}/` : repo.html_url">{{repo.name}}</a>
+</template>
+</table>

@@ -80,6 +80,7 @@ import { createApp } from "vue";
   <td><a :href="repo.html_url" class="devicon-github-plain"></a>
   <td><a :href="repo.has_pages ? `https://${repo.owner.login}.github.io/${repo.name}/` : null">{{repo.name}}/</a>
   <td>{{repo.created_at.replace(/T.*/, "")}}
+  <td>{{repo.updated_at.replace(/T.*/, "")}}
   <td style="text-align: right">{{repo.size}}KB
   <td>{{repo.description}}
 </template>

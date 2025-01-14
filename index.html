@@ -20,8 +20,7 @@
 <script type="module" async>
 function* parseLinks(str) {
   let ret, propertyName;
-  for (const match of str.matchAll(/<([^>]*)|; *([^ =]*)|= *"((?:[^"\\]|\\.)*)"|= *([^,;]*)/g)) {
-    const [g0, g1, g2, g3, g4] = match;
+  for (const [g0, g1, g2, g3, g4] of str.matchAll(/<([^>]*)|; *([^ =]*)|= *"((?:[^"\\]|\\.)*)"|= *([^,;]*)/g)) {
     switch (g0[0]) {
     case '<':
       if (ret) yield ret;

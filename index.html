@@ -19,9 +19,8 @@
 </script>
 <script type="module" async>
 function* parseLinks(str) {
-  const matches = str.matchAll(/<([^>]*)|; *([^ =]*)|= *"((?:[^"\\]|\\.)*)"|= *([^,;]*)/g);
   let ret, propertyName;
-  for (const match of matches) {
+  for (const match of str.matchAll(/<([^>]*)|; *([^ =]*)|= *"((?:[^"\\]|\\.)*)"|= *([^,;]*)/g)) {
     const [g0, g1, g2, g3, g4] = match;
     switch (g0[0]) {
     case '<':

@@ -48,7 +48,7 @@ function links(str) {
 async function* ghRequest(url) {
   const resp = await fetch(url);
   if (!resp.ok) throw new Error(`request to repos endpoint returned ${resp.status}`);
-  for (const page of await resp.json()) yield page;
+  yield* await resp.json();
   const { next } = links(resp);
   if (next) yield* ghRequest(next[0].value);
 }

@@ -65,6 +65,7 @@ import { createApp } from "vue";
   const data = {
     location: location,
     repos: await toArrayPromise(ghRequest("https://api.github.com/users/sixcorners/repos")),
+    kbFmt: new Intl.NumberFormat(undefined, {style: "unit", unit: "kilobyte"}).format,
   };
   createApp({data() { return data; }}).mount("body");
 })();
@@ -80,7 +81,7 @@ import { createApp } from "vue";
   <td><a :href="repo.has_pages ? `https://${repo.owner.login}.github.io/${repo.name}/` : null">{{repo.name}}/</a>
   <td>{{repo.created_at.replace(/T.*/, "")}}
   <td>{{repo.updated_at.replace(/T.*/, "")}}
-  <td style="text-align: right">{{repo.size}}KB
+  <td style="text-align: right">{{kbFmt(repo.size)}}
   <td>{{repo.description}}
 </template>
 </table>

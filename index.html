@@ -21,7 +21,7 @@ td { padding: 0 4px; }
 <script type="module" async>
 function* parseLinks(str) {
   let ret, propertyName;
-  for (const [g0, g1, g2, g3, g4] of str.matchAll(/<([^>]*)|; *([^ =]*)|= *"((?:[^"\\]|\\.)*)"|= *([^,;]*)/g)) {
+  for (const [g0, g1, g2, g3, g4] of str.matchAll(/<([^>]*)|; *([^ =]*)|= *"((?:[^"\\]|\\.)*)"|= *([^,;]*)/g))
     switch (g0[0]) {
     case '<':
       if (ret) yield ret;
@@ -34,7 +34,6 @@ function* parseLinks(str) {
       ret[propertyName] = g4 ?? g3.replace(/\\(.)/g, "$1");
       break;
     }
-  }
   if (ret) yield ret;
 }
 

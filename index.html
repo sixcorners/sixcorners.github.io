@@ -21,7 +21,7 @@ td { padding: 0 4px; }
 <script type="module" async>
 function* parseLinks(str) {
   let ret, propertyName;
-  for (const [g0, g1, g2, g3, g4] of str.matchAll(/<([^>]*)|; *([^ =]*)|= *"((?:[^"\\]|\\.)*)"|= *([^,;]*)/g))
+  for (const [g0, g1, g2, g3, g4] of str.matchAll(/<([^>]*)|; *([^ =]*)|= *"((?:[^"\\]|\\.)*)"|= *([^,;]*)/gu))
     switch (g0[0]) {
     case '<':
       if (ret) yield ret;
@@ -31,7 +31,7 @@ function* parseLinks(str) {
       propertyName = g2;
       break;
     case '=':
-      ret[propertyName] = g4 ?? g3.replace(/\\(.)/g, "$1");
+      ret[propertyName] = g4 ?? g3.replace(/\\(.)/gu, "$1");
       break;
     }
   if (ret) yield ret;
@@ -66,7 +66,7 @@ import { createApp } from "vue";
 (async() => {
   const data = {
     location: location,
-    repos: await toArrayPromise(ghRequest(`https://api.github.com/users/${location.hostname.split(/\./)[0]}/repos`)),
+    repos: await toArrayPromise(ghRequest(`https://api.github.com/users/${location.hostname.split(/\./u)[0]}/repos`)),
     bFmt: new Intl.NumberFormat(undefined, {style: "unit", unit: "byte", unitDisplay: "narrow", notation: "compact"}).format,
     kbFmt: new Intl.NumberFormat(undefined, {style: "unit", unit: "kilobyte"}).format,
     devicon: {
@@ -91,8 +91,8 @@ import { createApp } from "vue";
   <td><a :href="repo.html_url" class="devicon-github-plain"></a>
   <td :title="repo.language"><i :class="`devicon-${devicon[repo.language] ?? repo.language?.toLowerCase()}-plain`"></i>
   <td><a :href="repo.has_pages ? `https://${repo.owner.login}.github.io/${repo.name}/` : null">{{repo.name}}/</a>
-  <td :title="repo.created_at">{{repo.created_at.replace(/T.*/, "")}}
-  <td :title="repo.updated_at">{{repo.updated_at.replace(/T.*/, "")}}
+  <td :title="repo.created_at">{{repo.created_at.replace(/T.*/u, "")}}
+  <td :title="repo.updated_at">{{repo.updated_at.replace(/T.*/u, "")}}
   <td :title="kbFmt(repo.size)" style="text-align: right">{{bFmt(repo.size * 1000)}}
   <td>{{repo.description}}
 </template>

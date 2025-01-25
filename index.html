@@ -45,11 +45,14 @@ function links(str) {
 }
 
 async function* ghRequest(url) {
-  const resp = await fetch(url);
-  if (!resp.ok) throw new Error(`request to repos endpoint returned ${resp.status}`);
-  yield* await resp.json();
-  const { next } = links(resp);
-  if (next) yield* ghRequest(next[0].value);
+  for (;;) {
+    const resp = await fetch(url);
+    if (!resp.ok) throw new Error(`request to repos endpoint returned ${resp.status}`);
+    yield* await resp.json();
+    const { next } = links(resp);
+    if (!next) break;
+    url = next[0].value;
+  }
 }
 
 async function toArrayPromise(iter) {
